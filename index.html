@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCN - Roblox Champions Network</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-card: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-primary: #00d4ff;
+            --accent-secondary: #ff6b6b;
+            --accent-gradient: linear-gradient(135deg, #00d4ff, #ff6b6b);
+            --border: rgba(255, 255, 255, 0.1);
+            --shadow: rgba(0, 0, 0, 0.5);
+            --discord: #5865F2;
+        }
+
+        .light-mode {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-primary: #2c3e50;
+            --text-secondary: #6c757d;
+            --accent-primary: #007bff;
+            --accent-secondary: #dc3545;
+            --accent-gradient: linear-gradient(135deg, #007bff, #dc3545);
+            --border: rgba(0, 0, 0, 0.1);
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .bg-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) { width: 80px; height: 80px; top: 10%; left: 10%; animation-delay: 0s; }
+        .shape:nth-child(2) { width: 120px; height: 120px; top: 70%; left: 80%; animation-delay: 2s; }
+        .shape:nth-child(3) { width: 60px; height: 60px; top: 20%; left: 70%; animation-delay: 4s; }
+        .shape:nth-child(4) { width: 100px; height: 100px; top: 80%; left: 20%; animation-delay: 1s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.1); }
+        }
+
+        /* Login Screen */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: all 0.5s ease;
+        }
+
+        .login-screen.hide {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.9);
+        }
+
+        .login-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 4rem;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px var(--shadow);
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--accent-gradient);
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .login-logo {
+            font-size: 4rem;
+            font-weight: 900;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: -2px;
+        }
+
+        .login-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .login-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .discord-login-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 18px 48px;
+            background: var(--discord);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(88, 101, 242, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+
+        .discord-login-btn:hover {
+            background: #4752C4;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 48px rgba(88, 101, 242, 0.4);
+        }
+
+        .discord-icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .light-mode header {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-primary);
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--bg-card);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            border: 1px solid var(--border);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .user-name {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            color: var(--accent-secondary);
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .theme-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent-primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .mobile-menu span {
+            width: 25px;
+            height: 3px;
+            background: var(--text-primary);
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+        }
+
+        .page {
+            display: none;
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Welcome Message */
+        .welcome-banner {
+            background: var(--accent-gradient);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .welcome-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            z-index: 1;
+            position: relative;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 6rem 2rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--accent-gradient);
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -2px;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 18px 48px;
+            background: var(--accent-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 48px rgba(0, 212, 255, 0.4);
+        }
+
+        /* News Section */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .news-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .news-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px var(--shadow);
+            border-color: var(--accent-primary);
+        }
+
+        .news-image {
+            height: 200px;
+            background: var(--accent-gradient);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 1;
+        }
+
+        .news-date {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .news-content {
+            padding: 2rem;
+        }
+
+        .news-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        .news-excerpt {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .news-category {
+            display: inline-block;
+            background: var(--accent-gradient);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Cards */
+        .features, .tournament-grid, .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent-gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px var(--shadow);
+            border-color: var(--accent-primary);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        /* About Section */
+        .about-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 4rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .about-content h2 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+
+        .about-content p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        /* Tournament Status */
+        .tournament-status {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-active {
+            background: linear-gradient(45deg, #00d4aa, #00d4ff);
+            color: white;
+        }
+
+        .status-upcoming {
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            color: white;
+        }
+
+        /* Contact Specific */
+        .contact-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 12px 30px;
+            background: var(--accent-primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-2px);
+        }
+
+        .discord-link {
+            background: #5865F2;
+        }
+
+        .discord-link:hover {
+            background: #4752C4;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            color: var(--text-secondary);
+        }
+
+        /* Page titles */
+        .page-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .news-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .features, .tournament-grid, .contact-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .page {
+                    padding: 2rem 1rem;
+                }
+
+                .about-content, .login-card {
+                    padding: 2rem;
+                }
+
+                .about-content h2 {
+                    font-size: 2rem;
+                }
+
+                .user-info {
+                    flex-direction: column;
+                    gap: 0.5rem;
+                }
+            }
+
+            /* Loading */
+            .loading {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: var(--bg-primary);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+                transition: opacity 0.5s ease;
+            }
+
+            .loading.hide {
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            .spinner {
+                width: 60px;
+                height: 60px;
+                border: 4px solid var(--border);
+                border-top: 4px solid var(--accent-primary);
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin-bottom: 2rem;
+            }
+
+            .loading-text {
+                color: var(--text-secondary);
+                font-size: 1.1rem;
+                font-weight: 500;
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Loading Screen -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <div class="loading-text">Carregando RCN...</div>
+        </div>
+
+        <!-- Login Screen -->
+        <div class="login-screen" id="loginScreen">
+            <div class="login-card">
+                <div class="login-logo">RCN</div>
+                <h1 class="login-title">Bem-vindo à RCN</h1>
+                <p class="login-subtitle">Entre com o seu Discord para aceder à Roblox Champions Network e descobrir um mundo de competição épica!</p>
+                <button class="discord-login-btn" onclick="loginWithDiscord()">
+                    <svg class="discord-icon" viewBox="0 0 24 24">
+                        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
+                    </svg>
+                    Entrar com Discord
+                </button>
+            </div>
+        </div>
+
+        <!-- Animated Background -->
+        <div class="bg-animation">
+            <div class="bg-grid"></div>
+            <div class="floating-shapes">
+                <div class="shape"></div>
+                <div class="shape"></div>
+                <div class="shape"></div>
+                <div class="shape"></div>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <header id="mainHeader" style="display: none;">
+            <nav>
+                <div class="logo">RCN</div>
+                <ul class="nav-links">
+                    <li><a onclick="showPage('home')">Início</a></li>
+                    <li><a onclick="showPage('news')">Notícias</a></li>
+                    <li><a onclick="showPage('about')">Quem Somos</a></li>
+                    <li><a onclick="showPage('tournaments')">Torneios</a></li>
+                    <li><a onclick="showPage('contact')">Contacto</a></li>
+                    <li><a href="https://rcntickets.netlify.app" target="_blank">Bilhetes</a></li>
+                </ul>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="user-info" id="userInfo">
+                        <div class="user-avatar" id="userAvatar">U</div>
+                        <span class="user-name" id="userName">Utilizador</span>
+                        <button class="logout-btn" onclick="logout()" title="Sair">⚠</button>
+                    </div>
+                    <button class="theme-toggle" onclick="toggleTheme()">
+                        <span id="theme-icon">🌙</span>
+                        <span id="theme-text">Escuro</span>
+                    </button>
+                </div>
+                <div class="mobile-menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main id="mainContent" style="display: none;">
+            <!-- Home Page -->
+            <div class="page active" id="home">
+                <div class="welcome-banner" id="welcomeBanner">
+                    <div class="welcome-text">Bem-vindo de volta, <span id="welcomeName">Campeão</span>! 🏆</div>
+                </div>
+
+                <div class="hero">
+                    <h1>RCN</h1>
+                    <p>Roblox Champions Network - Onde nascem os verdadeiros campeões do universo Roblox</p>
+                    <button class="cta-button" onclick="showPage('news')">Ver Últimas Notícias</button>
+                </div>
+
+                <div class="features">
+                    <div class="card">
+                        <div class="card-icon">🏆</div>
+                        <h3>Competição Elite</h3>
+                        <p>Torneios organizados com os melhores jogadores e equipas. Sistema de ranking profissional e fair play garantido em todas as competições.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🌍</div>
+                        <h3>Expansão Global</h3>
+                        <p>Da liga nacional para o mundo inteiro. Em breve teremos ligas internacionais e a épica Champions League da RCN!</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">👥</div>
+                        <h3>Comunidade Ativa</h3>
+                        <p>Junta-te a milhares de jogadores apaixonados. Discord ativo, eventos especiais e uma comunidade que vive e respira Roblox.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- News Page -->
+            <div class="page" id="news">
+                <h2 class="page-title">Últimas Notícias</h2>
+                
+                <div class="news-grid">
+                    <div class="news-card">
+                        <div class="news-image">
+                            <div class="news-date">10 Set 2024</div>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-category">TORNEIO</div>
+                            <h3 class="news-title">Liga Nacional RCN: Início da Nova Temporada!</h3>
+                            <p class="news-excerpt">A nova temporada da Liga Nacional RCN está oficialmente aberta! 32 equipas vão competir pelo título nacional e pela vaga na futura Champions League. Inscrições abertas até 20 de Setembro.</p>
+                        </div>
+                    </div>
+
+                    <div class="news-card">
+                        <div class="news-image">
+                            <div class="news-date">8 Set 2024</div>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-category">ANÚNCIO</div>
+                            <h3 class="news-title">Sistema de Bilhetes para o Estádio Virtual</h3>
+                            <p class="news-excerpt">Agora podes garantir o teu lugar nas finais! Lançámos o novo sistema de bilhetes para assistires aos jogos mais importantes no nosso estádio virtual com experiência VIP incluída.</p>
+                        </div>
+                    </div>
+
+                    <div class="news-card">
+                        <div class="news-image">
+                            <div class="news-date">5 Set 2024</div>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-category">EXPANSÃO</div>
+                            <h3 class="news-title">RCN Internacional: Próximos Países Revelados</h3>
+                            <p class="news-excerpt">A expansão internacional da RCN está a aproximar-se! Espanha, Brasil e Reino Unido serão os primeiros países a receber as suas próprias ligas nacionais em 2025.</p>
+                        </div>
+                    </div>
+
+                    <div class="news-card">
+                        <div class="news-image">
+                            <div class="news-date">3 Set 2024</div>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-category">COMUNIDADE</div>
+                            <h3 class="news-title">Discord Oficial Ultrapassa 10.000 Membros!</h3>
+                            <p class="news-excerpt">A nossa comunidade no Discord atingiu um marco histórico! Mais de 10.000 jogadores já fazem parte da família RCN. Eventos especiais de celebração a decorrer esta semana!</p>
+                        </div>
+                    </div>
+
+                    <div class="news-card">
+                        <div class="news-image">
+                            <div class="news-date">1 Set 2024</div>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-category">PARCERIA</div>
+                            <h3 class="news-title">Nova Parceria com Streamers Portugueses</h3>
+                            <p class="news-excerpt">A RCN estabeleceu parcerias com os maiores streamers de Roblox em Portugal! Transmissões exclusivas, análises detalhadas e conteúdo especial todas as semanas.</p>
+                        </div>
+                    </div>
+
+                    <div class="news-card">
+                        <div class="news-image">
+                            <div class="news-date">28 Ago 2024</div>
+                        </div>
+                        <div class="news-content">
+                            <div class="news-category">CHAMPIONS</div>
+                            <h3 class="news-title">Champions League RCN: Primeiro Esboço Revelado</h3>
+                            <p class="news-excerpt">Revelamos o primeiro esboço da estrutura da Champions League RCN! 64 equipas de 16 países diferentes vão competir pelo título supremo mundial. Formato inspirado na Champions League de futebol.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Page -->
+            <div class="page" id="about">
+                <div class="about-content">
+                    <h2>Quem Somos - RCN | Roblox Champions Network</h2>
+                    <p>Bem-vindo à <strong>RCN</strong>, a <strong>Roblox Champions Network</strong> – uma liga competitiva dedicada a reunir os melhores jogadores de Roblox em competições organizadas, intensas e emocionantes!</p>
+                    
+                    <p>Atualmente, somos uma <strong>liga nacional em crescimento</strong>, mas o nosso objetivo vai muito além. Em breve, vamos abrir a <strong>RCN para jogadores de vários países</strong>, criando <strong>ligas internacionais</strong> e expandindo a nossa comunidade para <strong>todo o mundo</strong>.</p>
+                    
+                    <p>O futuro reserva algo ainda maior: a tão aguardada <strong>Champions League da RCN</strong>, onde as melhores equipas de cada país vão competir entre si para conquistar o título de campeã suprema da <strong>Roblox Champions Network</strong>.</p>
+                    
+                    <p>Se procuras competição <strong>séria</strong>, <strong>fair play</strong> e uma <strong>comunidade ativa</strong>, estás no lugar certo. Junta-te a nós e faz parte desta jornada épica no <strong>universo Roblox</strong>!</p>
+                </div>
+            </div>
+
+            <!-- Tournaments Page -->
+            <div class="page" id="tournaments">
+                <h2 class="page-title">Torneios & Competições</h2>
+                
+                <div class="tournament-grid">
+                    <div class="card">
+                        <div class="tournament-status status-active">Em Curso</div>
+                        <h3>Liga Nacional RCN</h3>
+                        <p>A competição principal da RCN onde as melhores equipas nacionais lutam pelo título. Sistema de pontos, playoffs emocionantes e transmissões ao vivo.</p>
+                        <p><strong>Formato:</strong> Liga Regular + Playoffs</p>
+                        <p><strong>Prémio:</strong> Troféu RCN + Classificação Champions</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="tournament-status status-upcoming">Brevemente</div>
+                        <h3>RCN International</h3>
+                        <p>A expansão internacional da RCN! Equipas de múltiplos países vão competir nas suas ligas nacionais para se qualificarem para a Champions League.</p>
+                        <p><strong>Formato:</strong> Ligas Nacionais Paralelas</p>
+                        <p><strong>Regiões:</strong> Europa, América, Ásia</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="tournament-status status-upcoming">2025</div>
+                        <h3>Champions League RCN</h3>
+                        <p>O torneio dos torneios! As melhores equipas de cada país enfrentam-se numa competição épica pelo título de Campeã Suprema Mundial da RCN.</p>
+                        <p><strong>Formato:</strong> Fase de Grupos + Eliminatórias</p>
+                        <p><strong>Prémio:</strong> Troféu Champions + Prémio Monetário</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Page -->
+            <div class="page" id="contact">
+                <h2 class="page-title">Junta-te à Nossa Comunidade</h2>
+                
+                <div class="contact-grid">
+                    <div class="card">
+                        <div class="card-icon">💬</div>
+                        <h3>Discord Oficial</h3>
+                        <p>Junta-te ao nosso servidor Discord! Chat ao vivo, anúncios importantes, procura de equipas e muito mais. A nossa comunidade está sempre ativa!</p>
+                        <a href="https://discord.gg/yaCAwQGwc9" target="_blank" class="contact-link discord-link">Entrar no Discord</a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">🎟️</div>
+                        <h3>Bilhetes para o Estádio</h3>
+                        <p>Garante o teu lugar nas finais! Bilhetes para assistir aos jogos mais importantes no nosso estádio virtual. Experiência VIP disponível.</p>
+                        <a href="https://rcntickets.netlify.app" target="_blank" class="contact-link">Comprar Bilhetes</a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">🤝</div>
+                        <h3>Parcerias & Patrocínios</h3>
+                        <p>Interessado em fazer parte da família RCN? Contacta-nos para oportunidades de patrocínio, parcerias estratégicas e colaborações.</p>
+                        <a href="https://discord.gg/yaCAwQGwc9" target="_blank" class="contact-link">Falar Connosco</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer id="mainFooter" style="display: none;">
+            <p>&copy; 2024 RCN - Roblox Champions Network. Todos os direitos reservados.</p>
+            <p>Construído com ❤️ para a elite do Roblox competitivo</p>
+        </footer>
+
+        <script>
+            let isDarkMode = true;
+            let currentUser = null;
+
+            // Mock Discord login (in real app, this would be OAuth)
+            function loginWithDiscord() {
+                // Simulate Discord login
+                setTimeout(() => {
+                    const mockUser = {
+                        id: '123456789',
+                        username: 'RobloxChampion#1234',
+                        displayName: 'RobloxChampion',
+                        avatar: null
+                    };
+                    
+                    currentUser = mockUser;
+                    localStorage.setItem('rcn_user', JSON.stringify(mockUser));
+                    
+                    // Hide login screen and show main content
+                    document.getElementById('loginScreen').classList.add('hide');
+                    setTimeout(() => {
+                        document.getElementById('loginScreen').style.display = 'none';
+                        document.getElementById('mainHeader').style.display = 'block';
+                        document.getElementById('mainContent').style.display = 'block';
+                        document.getElementById('mainFooter').style.display = 'block';
+                        
+                        updateUserInfo();
+                    }, 500);
+                }, 1000);
+            }
+
+            // Update user info in header
+            function updateUserInfo() {
+                if (currentUser) {
+                    const userName = document.getElementById('userName');
+                    const userAvatar = document.getElementById('userAvatar');
+                    const welcomeName = document.getElementById('welcomeName');
+                    
+                    userName.textContent = currentUser.displayName;
+                    userAvatar.textContent = currentUser.displayName.charAt(0).toUpperCase();
+                    welcomeName.textContent = currentUser.displayName;
+                }
+            }
+
+            // Logout function
+            function logout() {
+                currentUser = null;
+                localStorage.removeItem('rcn_user');
+                
+                // Hide main content and show login screen
+                document.getElementById('mainHeader').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'none';
+                document.getElementById('mainFooter').style.display = 'none';
+                document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('loginScreen').classList.remove('hide');
+            }
+
+            // Check if user is already logged in
+            function checkAuth() {
+                const storedUser = localStorage.getItem('rcn_user');
+                if (storedUser) {
+                    currentUser = JSON.parse(storedUser);
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('mainHeader').style.display = 'block';
+                    document.getElementById('mainContent').style.display = 'block';
+                    document.getElementById('mainFooter').style.display = 'block';
+                    updateUserInfo();
+                }
+            }
+
+            // Theme Toggle
+            function toggleTheme() {
+                isDarkMode = !isDarkMode;
+                const body = document.body;
+                const themeIcon = document.getElementById('theme-icon');
+                const themeText = document.getElementById('theme-text');
+
+                if (isDarkMode) {
+                    body.classList.remove('light-mode');
+                    themeIcon.textContent = '🌙';
+                    themeText.textContent = 'Escuro';
+                } else {
+                    body.classList.add('light-mode');
+                    themeIcon.textContent = '☀️';
+                    themeText.textContent = 'Claro';
+                }
+            }
+
+            // Loading screen
+            window.addEventListener('load', function() {
+                setTimeout(() => {
+                    document.getElementById('loading').classList.add('hide');
+                    checkAuth();
+                }, 1200);
+            });
+
+            // Page navigation
+            function showPage(pageId) {
+                const pages = document.querySelectorAll('.page');
+                pages.forEach(page => {
+                    page.classList.remove('active');
+                });
+
+                document.getElementById(pageId).classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Header scroll effect
+            let lastScroll = 0;
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                const currentScroll = window.scrollY;
+
+                if (currentScroll > 100) {
+                    header.style.background = isDarkMode ? 
+                        'rgba(10, 10, 10, 0.95)' : 
+                        'rgba(255, 255, 255, 0.95)';
+                    header.style.backdropFilter = 'blur(20px)';
+                } else {
+                    header.style.background = isDarkMode ? 
+                        'rgba(10, 10, 10, 0.9)' : 
+                        'rgba(255, 255, 255, 0.9)';
+                }
+
+                lastScroll = currentScroll;
+            });
+
+            // Smooth animations on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Initialize
+            document.addEventListener('DOMContentLoaded', function() {
+                // Observe elements for animations
+                const cards = document.querySelectorAll('.card, .news-card');
+                cards.forEach((card, index) => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(50px)';
+                    card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+                    observer.observe(card);
+                });
+
+                // Add parallax effect to floating shapes
+                window.addEventListener('scroll', function() {
+                    const shapes = document.querySelectorAll('.shape');
+                    const scrolled = window.pageYOffset;
+                    
+                    shapes.forEach((shape, index) => {
+                        const rate = scrolled * (0.5 + index * 0.1);
+                        shape.style.transform = `translateY(${rate}px)`;
+                    });
+                });
+            });
+
+            // Easter egg: Konami code
+            let konamiCode = [];
+            const konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+
+            document.addEventListener('keydown', function(e) {
+                konamiCode.push(e.keyCode);
+                if (konamiCode.length > konamiSequence.length) {
+                    konamiCode.shift();
+                }
+                
+                if (konamiCode.join(',') === konamiSequence.join(',')) {
+                    document.body.style.animation = 'rainbow 2s infinite';
+                    setTimeout(() => {
+                        document.body.style.animation = '';
+                    }, 2000);
+                }
+            });
+
+            // Add rainbow animation for easter egg
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes rainbow {
+                    0% { filter: hue-rotate(0deg); }
+                    100% { filter: hue-rotate(360deg); }
+                }
+            `;
+            document.head.appendChild(style);
+        </script>
+    </body>
+    </html>
