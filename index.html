@@ -271,13 +271,20 @@
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: var(--accent-gradient);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
             font-weight: bold;
             font-size: 0.9rem;
+            object-fit: cover;
+            border: 2px solid var(--accent-primary);
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
         }
 
         .user-name {
@@ -294,6 +301,7 @@
             padding: 0.25rem;
             border-radius: 4px;
             transition: all 0.3s ease;
+            font-size: 1.1rem;
         }
 
         .logout-btn:hover {
@@ -723,516 +731,563 @@
             }
 
             .news-grid {
-                    grid-template-columns: 1fr;
-                }
-
-                .features, .tournament-grid, .contact-grid {
-                    grid-template-columns: 1fr;
-                }
-
-                .page {
-                    padding: 2rem 1rem;
-                }
-
-                .about-content, .login-card {
-                    padding: 2rem;
-                }
-
-                .about-content h2 {
-                    font-size: 2rem;
-                }
-
-                .user-info {
-                    flex-direction: column;
-                    gap: 0.5rem;
-                }
+                grid-template-columns: 1fr;
             }
 
-            /* Loading */
-            .loading {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: var(--bg-primary);
-                display: flex;
+            .features, .tournament-grid, .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page {
+                padding: 2rem 1rem;
+            }
+
+            .about-content, .login-card {
+                padding: 2rem;
+            }
+
+            .about-content h2 {
+                font-size: 2rem;
+            }
+
+            .user-info {
                 flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                z-index: 9999;
-                transition: opacity 0.5s ease;
+                gap: 0.5rem;
             }
+        }
 
-            .loading.hide {
-                opacity: 0;
-                pointer-events: none;
-            }
+        /* Loading */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
 
-            .spinner {
-                width: 60px;
-                height: 60px;
-                border: 4px solid var(--border);
-                border-top: 4px solid var(--accent-primary);
-                border-radius: 50%;
-                animation: spin 1s linear infinite;
-                margin-bottom: 2rem;
-            }
+        .loading.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
 
-            .loading-text {
-                color: var(--text-secondary);
-                font-size: 1.1rem;
-                font-weight: 500;
-            }
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--border);
+            border-top: 4px solid var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 2rem;
+        }
 
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-        </style>
-    </head>
-    <body>
-        <!-- Loading Screen -->
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <div class="loading-text">Carregando RCN...</div>
+        .loading-text {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div class="loading-text">Carregando RCN...</div>
+    </div>
+
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-card">
+            <div class="login-logo">RCN</div>
+            <h1 class="login-title">Bem-vindo à RCN</h1>
+            <p class="login-subtitle">Entre com o seu Discord para aceder à Roblox Champions Network e descobrir um mundo de competição épica!</p>
+            <button class="discord-login-btn" onclick="loginWithDiscord()">
+                <svg class="discord-icon" viewBox="0 0 24 24">
+                    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
+                </svg>
+                Entrar com Discord
+            </button>
         </div>
+    </div>
 
-        <!-- Login Screen -->
-        <div class="login-screen" id="loginScreen">
-            <div class="login-card">
-                <div class="login-logo">RCN</div>
-                <h1 class="login-title">Bem-vindo à RCN</h1>
-                <p class="login-subtitle">Entre com o seu Discord para aceder à Roblox Champions Network e descobrir um mundo de competição épica!</p>
-                <button class="discord-login-btn" onclick="loginWithDiscord()">
-                    <svg class="discord-icon" viewBox="0 0 24 24">
-                        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028a14.09 14.09 0 0 0 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.892a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/>
-                    </svg>
-                    Entrar com Discord
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="bg-grid"></div>
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header id="mainHeader" style="display: none;">
+        <nav>
+            <div class="logo">RCN</div>
+            <ul class="nav-links">
+                <li><a onclick="showPage('home')">Início</a></li>
+                <li><a onclick="showPage('news')">Notícias</a></li>
+                <li><a onclick="showPage('about')">Quem Somos</a></li>
+                <li><a onclick="showPage('tournaments')">Torneios</a></li>
+                <li><a onclick="showPage('contact')">Contacto</a></li>
+                <li><a href="https://rcntickets.netlify.app" target="_blank">Bilhetes</a></li>
+            </ul>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <div class="user-info" id="userInfo">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <span class="user-name" id="userName">Utilizador</span>
+                    <button class="logout-btn" onclick="logout()" title="Sair">⚠</button>
+                </div>
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <span id="theme-icon">🌙</span>
+                    <span id="theme-text">Escuro</span>
                 </button>
             </div>
-        </div>
+            <div class="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
 
-        <!-- Animated Background -->
-        <div class="bg-animation">
-            <div class="bg-grid"></div>
-            <div class="floating-shapes">
-                <div class="shape"></div>
-                <div class="shape"></div>
-                <div class="shape"></div>
-                <div class="shape"></div>
+    <!-- Main Content -->
+    <main id="mainContent" style="display: none;">
+        <!-- Home Page -->
+        <div class="page active" id="home">
+            <div class="welcome-banner" id="welcomeBanner">
+                <div class="welcome-text">Bem-vindo de volta, <span id="welcomeName">Campeão</span>! 🏆</div>
+            </div>
+
+            <div class="hero">
+                <h1>RCN</h1>
+                <p>Roblox Champions Network - Onde nascem os verdadeiros campeões do universo Roblox</p>
+                <button class="cta-button" onclick="showPage('news')">Ver Últimas Notícias</button>
+            </div>
+
+            <div class="features">
+                <div class="card">
+                    <div class="card-icon">🏆</div>
+                    <h3>Competição Elite</h3>
+                    <p>Torneios organizados com os melhores jogadores e equipas. Sistema de ranking profissional e fair play garantido em todas as competições.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🌍</div>
+                    <h3>Expansão Global</h3>
+                    <p>Da liga nacional para o mundo inteiro. Em breve teremos ligas internacionais e a épica Champions League da RCN!</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">👥</div>
+                    <h3>Comunidade Ativa</h3>
+                    <p>Junta-te a milhares de jogadores apaixonados. Discord ativo, eventos especiais e uma comunidade que vive e respira Roblox.</p>
+                </div>
             </div>
         </div>
 
-        <!-- Header -->
-        <header id="mainHeader" style="display: none;">
-            <nav>
-                <div class="logo">RCN</div>
-                <ul class="nav-links">
-                    <li><a onclick="showPage('home')">Início</a></li>
-                    <li><a onclick="showPage('news')">Notícias</a></li>
-                    <li><a onclick="showPage('about')">Quem Somos</a></li>
-                    <li><a onclick="showPage('tournaments')">Torneios</a></li>
-                    <li><a onclick="showPage('contact')">Contacto</a></li>
-                    <li><a href="https://rcntickets.netlify.app" target="_blank">Bilhetes</a></li>
-                </ul>
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                    <div class="user-info" id="userInfo">
-                        <div class="user-avatar" id="userAvatar">U</div>
-                        <span class="user-name" id="userName">Utilizador</span>
-                        <button class="logout-btn" onclick="logout()" title="Sair">⚠</button>
+        <!-- News Page -->
+        <div class="page" id="news">
+            <h2 class="page-title">Últimas Notícias</h2>
+            
+            <div class="news-grid">
+                <div class="news-card">
+                    <div class="news-image">
+                        <div class="news-date">10 Set 2024</div>
                     </div>
-                    <button class="theme-toggle" onclick="toggleTheme()">
-                        <span id="theme-icon">🌙</span>
-                        <span id="theme-text">Escuro</span>
-                    </button>
-                </div>
-                <div class="mobile-menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </nav>
-        </header>
-
-        <!-- Main Content -->
-        <main id="mainContent" style="display: none;">
-            <!-- Home Page -->
-            <div class="page active" id="home">
-                <div class="welcome-banner" id="welcomeBanner">
-                    <div class="welcome-text">Bem-vindo de volta, <span id="welcomeName">Campeão</span>! 🏆</div>
+                    <div class="news-content">
+                        <div class="news-category">TORNEIO</div>
+                        <h3 class="news-title">Liga Nacional RCN: Início da Nova Temporada!</h3>
+                        <p class="news-excerpt">A nova temporada da Liga Nacional RCN está oficialmente aberta! 32 equipas vão competir pelo título nacional e pela vaga na futura Champions League. Inscrições abertas até 20 de Setembro.</p>
+                    </div>
                 </div>
 
-                <div class="hero">
-                    <h1>RCN</h1>
-                    <p>Roblox Champions Network - Onde nascem os verdadeiros campeões do universo Roblox</p>
-                    <button class="cta-button" onclick="showPage('news')">Ver Últimas Notícias</button>
+                <div class="news-card">
+                    <div class="news-image">
+                        <div class="news-date">8 Set 2024</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-category">ANÚNCIO</div>
+                        <h3 class="news-title">Sistema de Bilhetes para o Estádio Virtual</h3>
+                        <p class="news-excerpt">Agora podes garantir o teu lugar nas finais! Lançámos o novo sistema de bilhetes para assistires aos jogos mais importantes no nosso estádio virtual com experiência VIP incluída.</p>
+                    </div>
                 </div>
 
-                <div class="features">
-                    <div class="card">
-                        <div class="card-icon">🏆</div>
-                        <h3>Competição Elite</h3>
-                        <p>Torneios organizados com os melhores jogadores e equipas. Sistema de ranking profissional e fair play garantido em todas as competições.</p>
+                <div class="news-card">
+                    <div class="news-image">
+                        <div class="news-date">5 Set 2024</div>
                     </div>
-                    <div class="card">
-                        <div class="card-icon">🌍</div>
-                        <h3>Expansão Global</h3>
-                        <p>Da liga nacional para o mundo inteiro. Em breve teremos ligas internacionais e a épica Champions League da RCN!</p>
+                    <div class="news-content">
+                        <div class="news-category">EXPANSÃO</div>
+                        <h3 class="news-title">RCN Internacional: Próximos Países Revelados</h3>
+                        <p class="news-excerpt">A expansão internacional da RCN está a aproximar-se! Espanha, Brasil e Reino Unido serão os primeiros países a receber as suas próprias ligas nacionais em 2025.</p>
                     </div>
-                    <div class="card">
-                        <div class="card-icon">👥</div>
-                        <h3>Comunidade Ativa</h3>
-                        <p>Junta-te a milhares de jogadores apaixonados. Discord ativo, eventos especiais e uma comunidade que vive e respira Roblox.</p>
+                </div>
+
+                <div class="news-card">
+                    <div class="news-image">
+                        <div class="news-date">3 Set 2024</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-category">COMUNIDADE</div>
+                        <h3 class="news-title">Discord Oficial Ultrapassa 10.000 Membros!</h3>
+                        <p class="news-excerpt">A nossa comunidade no Discord atingiu um marco histórico! Mais de 10.000 jogadores já fazem parte da família RCN. Eventos especiais de celebração a decorrer esta semana!</p>
+                    </div>
+                </div>
+
+                <div class="news-card">
+                    <div class="news-image">
+                        <div class="news-date">1 Set 2024</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-category">PARCERIA</div>
+                        <h3 class="news-title">Nova Parceria com Streamers Portugueses</h3>
+                        <p class="news-excerpt">A RCN estabeleceu parcerias com os maiores streamers de Roblox em Portugal! Transmissões exclusivas, análises detalhadas e conteúdo especial todas as semanas.</p>
+                    </div>
+                </div>
+
+                <div class="news-card">
+                    <div class="news-image">
+                        <div class="news-date">28 Ago 2024</div>
+                    </div>
+                    <div class="news-content">
+                        <div class="news-category">CHAMPIONS</div>
+                        <h3 class="news-title">Champions League RCN: Primeiro Esboço Revelado</h3>
+                        <p class="news-excerpt">Revelamos o primeiro esboço da estrutura da Champions League RCN! 64 equipas de 16 países diferentes vão competir pelo título supremo mundial. Formato inspirado na Champions League de futebol.</p>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- News Page -->
-            <div class="page" id="news">
-                <h2 class="page-title">Últimas Notícias</h2>
+        <!-- About Page -->
+        <div class="page" id="about">
+            <div class="about-content">
+                <h2>Quem Somos - RCN | Roblox Champions Network</h2>
+                <p>Bem-vindo à <strong>RCN</strong>, a <strong>Roblox Champions Network</strong> – uma liga competitiva dedicada a reunir os melhores jogadores de Roblox em competições organizadas, intensas e emocionantes!</p>
                 
-                <div class="news-grid">
-                    <div class="news-card">
-                        <div class="news-image">
-                            <div class="news-date">10 Set 2024</div>
-                        </div>
-                        <div class="news-content">
-                            <div class="news-category">TORNEIO</div>
-                            <h3 class="news-title">Liga Nacional RCN: Início da Nova Temporada!</h3>
-                            <p class="news-excerpt">A nova temporada da Liga Nacional RCN está oficialmente aberta! 32 equipas vão competir pelo título nacional e pela vaga na futura Champions League. Inscrições abertas até 20 de Setembro.</p>
-                        </div>
-                    </div>
-
-                    <div class="news-card">
-                        <div class="news-image">
-                            <div class="news-date">8 Set 2024</div>
-                        </div>
-                        <div class="news-content">
-                            <div class="news-category">ANÚNCIO</div>
-                            <h3 class="news-title">Sistema de Bilhetes para o Estádio Virtual</h3>
-                            <p class="news-excerpt">Agora podes garantir o teu lugar nas finais! Lançámos o novo sistema de bilhetes para assistires aos jogos mais importantes no nosso estádio virtual com experiência VIP incluída.</p>
-                        </div>
-                    </div>
-
-                    <div class="news-card">
-                        <div class="news-image">
-                            <div class="news-date">5 Set 2024</div>
-                        </div>
-                        <div class="news-content">
-                            <div class="news-category">EXPANSÃO</div>
-                            <h3 class="news-title">RCN Internacional: Próximos Países Revelados</h3>
-                            <p class="news-excerpt">A expansão internacional da RCN está a aproximar-se! Espanha, Brasil e Reino Unido serão os primeiros países a receber as suas próprias ligas nacionais em 2025.</p>
-                        </div>
-                    </div>
-
-                    <div class="news-card">
-                        <div class="news-image">
-                            <div class="news-date">3 Set 2024</div>
-                        </div>
-                        <div class="news-content">
-                            <div class="news-category">COMUNIDADE</div>
-                            <h3 class="news-title">Discord Oficial Ultrapassa 10.000 Membros!</h3>
-                            <p class="news-excerpt">A nossa comunidade no Discord atingiu um marco histórico! Mais de 10.000 jogadores já fazem parte da família RCN. Eventos especiais de celebração a decorrer esta semana!</p>
-                        </div>
-                    </div>
-
-                    <div class="news-card">
-                        <div class="news-image">
-                            <div class="news-date">1 Set 2024</div>
-                        </div>
-                        <div class="news-content">
-                            <div class="news-category">PARCERIA</div>
-                            <h3 class="news-title">Nova Parceria com Streamers Portugueses</h3>
-                            <p class="news-excerpt">A RCN estabeleceu parcerias com os maiores streamers de Roblox em Portugal! Transmissões exclusivas, análises detalhadas e conteúdo especial todas as semanas.</p>
-                        </div>
-                    </div>
-
-                    <div class="news-card">
-                        <div class="news-image">
-                            <div class="news-date">28 Ago 2024</div>
-                        </div>
-                        <div class="news-content">
-                            <div class="news-category">CHAMPIONS</div>
-                            <h3 class="news-title">Champions League RCN: Primeiro Esboço Revelado</h3>
-                            <p class="news-excerpt">Revelamos o primeiro esboço da estrutura da Champions League RCN! 64 equipas de 16 países diferentes vão competir pelo título supremo mundial. Formato inspirado na Champions League de futebol.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- About Page -->
-            <div class="page" id="about">
-                <div class="about-content">
-                    <h2>Quem Somos - RCN | Roblox Champions Network</h2>
-                    <p>Bem-vindo à <strong>RCN</strong>, a <strong>Roblox Champions Network</strong> – uma liga competitiva dedicada a reunir os melhores jogadores de Roblox em competições organizadas, intensas e emocionantes!</p>
-                    
-                    <p>Atualmente, somos uma <strong>liga nacional em crescimento</strong>, mas o nosso objetivo vai muito além. Em breve, vamos abrir a <strong>RCN para jogadores de vários países</strong>, criando <strong>ligas internacionais</strong> e expandindo a nossa comunidade para <strong>todo o mundo</strong>.</p>
-                    
-                    <p>O futuro reserva algo ainda maior: a tão aguardada <strong>Champions League da RCN</strong>, onde as melhores equipas de cada país vão competir entre si para conquistar o título de campeã suprema da <strong>Roblox Champions Network</strong>.</p>
-                    
-                    <p>Se procuras competição <strong>séria</strong>, <strong>fair play</strong> e uma <strong>comunidade ativa</strong>, estás no lugar certo. Junta-te a nós e faz parte desta jornada épica no <strong>universo Roblox</strong>!</p>
-                </div>
-            </div>
-
-            <!-- Tournaments Page -->
-            <div class="page" id="tournaments">
-                <h2 class="page-title">Torneios & Competições</h2>
+                <p>Atualmente, somos uma <strong>liga nacional em crescimento</strong>, mas o nosso objetivo vai muito além. Em breve, vamos abrir a <strong>RCN para jogadores de vários países</strong>, criando <strong>ligas internacionais</strong> e expandindo a nossa comunidade para <strong>todo o mundo</strong>.</p>
                 
-                <div class="tournament-grid">
-                    <div class="card">
-                        <div class="tournament-status status-active">Em Curso</div>
-                        <h3>Liga Nacional RCN</h3>
-                        <p>A competição principal da RCN onde as melhores equipas nacionais lutam pelo título. Sistema de pontos, playoffs emocionantes e transmissões ao vivo.</p>
-                        <p><strong>Formato:</strong> Liga Regular + Playoffs</p>
-                        <p><strong>Prémio:</strong> Troféu RCN + Classificação Champions</p>
-                    </div>
-
-                    <div class="card">
-                        <div class="tournament-status status-upcoming">Brevemente</div>
-                        <h3>RCN International</h3>
-                        <p>A expansão internacional da RCN! Equipas de múltiplos países vão competir nas suas ligas nacionais para se qualificarem para a Champions League.</p>
-                        <p><strong>Formato:</strong> Ligas Nacionais Paralelas</p>
-                        <p><strong>Regiões:</strong> Europa, América, Ásia</p>
-                    </div>
-
-                    <div class="card">
-                        <div class="tournament-status status-upcoming">2025</div>
-                        <h3>Champions League RCN</h3>
-                        <p>O torneio dos torneios! As melhores equipas de cada país enfrentam-se numa competição épica pelo título de Campeã Suprema Mundial da RCN.</p>
-                        <p><strong>Formato:</strong> Fase de Grupos + Eliminatórias</p>
-                        <p><strong>Prémio:</strong> Troféu Champions + Prémio Monetário</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Contact Page -->
-            <div class="page" id="contact">
-                <h2 class="page-title">Junta-te à Nossa Comunidade</h2>
+                <p>O futuro reserva algo ainda maior: a tão aguardada <strong>Champions League da RCN</strong>, onde as melhores equipas de cada país vão competir entre si para conquistar o título de campeã suprema da <strong>Roblox Champions Network</strong>.</p>
                 
-                <div class="contact-grid">
-                    <div class="card">
-                        <div class="card-icon">💬</div>
-                        <h3>Discord Oficial</h3>
-                        <p>Junta-te ao nosso servidor Discord! Chat ao vivo, anúncios importantes, procura de equipas e muito mais. A nossa comunidade está sempre ativa!</p>
-                        <a href="https://discord.gg/yaCAwQGwc9" target="_blank" class="contact-link discord-link">Entrar no Discord</a>
-                    </div>
+                <p>Se procuras competição <strong>séria</strong>, <strong>fair play</strong> e uma <strong>comunidade ativa</strong>, estás no lugar certo. Junta-te a nós e faz parte desta jornada épica no <strong>universo Roblox</strong>!</p>
+            </div>
+        </div>
 
-                    <div class="card">
-                        <div class="card-icon">🎟️</div>
-                        <h3>Bilhetes para o Estádio</h3>
-                        <p>Garante o teu lugar nas finais! Bilhetes para assistir aos jogos mais importantes no nosso estádio virtual. Experiência VIP disponível.</p>
-                        <a href="https://rcntickets.netlify.app" target="_blank" class="contact-link">Comprar Bilhetes</a>
-                    </div>
+        <!-- Tournaments Page -->
+        <div class="page" id="tournaments">
+            <h2 class="page-title">Torneios & Competições</h2>
+            
+            <div class="tournament-grid">
+                <div class="card">
+                    <div class="tournament-status status-active">Em Curso</div>
+                    <h3>Liga Nacional RCN</h3>
+                    <p>A competição principal da RCN onde as melhores equipas nacionais lutam pelo título. Sistema de pontos, playoffs emocionantes e transmissões ao vivo.</p>
+                    <p><strong>Formato:</strong> Liga Regular + Playoffs</p>
+                    <p><strong>Prémio:</strong> Troféu RCN + Classificação Champions</p>
+                </div>
 
-                    <div class="card">
-                        <div class="card-icon">🤝</div>
-                        <h3>Parcerias & Patrocínios</h3>
-                        <p>Interessado em fazer parte da família RCN? Contacta-nos para oportunidades de patrocínio, parcerias estratégicas e colaborações.</p>
-                        <a href="https://discord.gg/yaCAwQGwc9" target="_blank" class="contact-link">Falar Connosco</a>
-                    </div>
+                <div class="card">
+                    <div class="tournament-status status-upcoming">Brevemente</div>
+                    <h3>RCN International</h3>
+                    <p>A expansão internacional da RCN! Equipas de múltiplos países vão competir nas suas ligas nacionais para se qualificarem para a Champions League.</p>
+                    <p><strong>Formato:</strong> Ligas Nacionais Paralelas</p>
+                    <p><strong>Regiões:</strong> Europa, América, Ásia</p>
+                </div>
+
+                <div class="card">
+                    <div class="tournament-status status-upcoming">2025</div>
+                    <h3>Champions League RCN</h3>
+                    <p>O torneio dos torneios! As melhores equipas de cada país enfrentam-se numa competição épica pelo título de Campeã Suprema Mundial da RCN.</p>
+                    <p><strong>Formato:</strong> Fase de Grupos + Eliminatórias</p>
+                    <p><strong>Prémio:</strong> Troféu Champions + Prémio Monetário</p>
                 </div>
             </div>
-        </main>
+        </div>
 
-        <!-- Footer -->
-        <footer id="mainFooter" style="display: none;">
-            <p>&copy; 2024 RCN - Roblox Champions Network. Todos os direitos reservados.</p>
-            <p>Construído com ❤️ para a elite do Roblox competitivo</p>
-        </footer>
+        <!-- Contact Page -->
+        <div class="page" id="contact">
+            <h2 class="page-title">Junta-te à Nossa Comunidade</h2>
+            
+            <div class="contact-grid">
+                <div class="card">
+                    <div class="card-icon">💬</div>
+                    <h3>Discord Oficial</h3>
+                    <p>Junta-te ao nosso servidor Discord! Chat ao vivo, anúncios importantes, procura de equipas e muito mais. A nossa comunidade está sempre ativa!</p>
+                    <a href="https://discord.gg/yaCAwQGwc9" target="_blank" class="contact-link discord-link">Entrar no Discord</a>
+                </div>
 
-        <script>
-            let isDarkMode = true;
-            let currentUser = null;
+                <div class="card">
+                    <div class="card-icon">🎟️</div>
+                    <h3>Bilhetes para o Estádio</h3>
+                    <p>Garante o teu lugar nas finais! Bilhetes para assistir aos jogos mais importantes no nosso estádio virtual. Experiência VIP disponível.</p>
+                    <a href="https://rcntickets.netlify.app" target="_blank" class="contact-link">Comprar Bilhetes</a>
+                </div>
 
-            // Mock Discord login (in real app, this would be OAuth)
-            function loginWithDiscord() {
-                // Simulate Discord login
-                setTimeout(() => {
-                    const mockUser = {
-                        id: '123456789',
-                        username: 'RobloxChampion#1234',
-                        displayName: 'RobloxChampion',
-                        avatar: null
+                <div class="card">
+                    <div class="card-icon">🤝</div>
+                    <h3>Parcerias & Patrocínios</h3>
+                    <p>Interessado em fazer parte da família RCN? Contacta-nos para oportunidades de patrocínio, parcerias estratégicas e colaborações.</p>
+                    <a href="https://discord.gg/yaCAwQGwc9" target="_blank" class="contact-link">Falar Connosco</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="mainFooter" style="display: none;">
+        <p>&copy; 2024 RCN - Roblox Champions Network. Todos os direitos reservados.</p>
+        <p>Construído com ❤️ para a elite do Roblox competitivo</p>
+    </footer>
+
+    <script>
+        let isDarkMode = true;
+        let currentUser = null;
+
+        // Check for access token in URL fragment (OAuth redirect)
+        function handleOAuthCallback() {
+            const fragment = new URLSearchParams(window.location.hash.slice(1));
+            const accessToken = fragment.get("access_token");
+
+            if (accessToken) {
+                fetch("https://discord.com/api/users/@me", {
+                    headers: { Authorization: `Bearer ${accessToken}` }
+                })
+                .then(res => res.json())
+                .then(user => {
+                    // Save user data with proper structure
+                    const userData = {
+                        id: user.id,
+                        username: user.username,
+                        discriminator: user.discriminator,
+                        global_name: user.global_name,
+                        avatar: user.avatar,
+                        displayName: user.global_name || user.username
                     };
                     
-                    currentUser = mockUser;
-                    localStorage.setItem('rcn_user', JSON.stringify(mockUser));
+                    // Store user data
+                    currentUser = userData;
+                    // Use variables instead of localStorage
                     
-                    // Hide login screen and show main content
-                    document.getElementById('loginScreen').classList.add('hide');
-                    setTimeout(() => {
-                        document.getElementById('loginScreen').style.display = 'none';
-                        document.getElementById('mainHeader').style.display = 'block';
-                        document.getElementById('mainContent').style.display = 'block';
-                        document.getElementById('mainFooter').style.display = 'block';
-                        
-                        updateUserInfo();
-                    }, 500);
-                }, 1000);
-            }
-
-            // Update user info in header
-            function updateUserInfo() {
-                if (currentUser) {
-                    const userName = document.getElementById('userName');
-                    const userAvatar = document.getElementById('userAvatar');
-                    const welcomeName = document.getElementById('welcomeName');
+                    // Clear URL fragment and redirect to clean URL
+                    window.history.replaceState({}, document.title, window.location.pathname);
                     
-                    userName.textContent = currentUser.displayName;
-                    userAvatar.textContent = currentUser.displayName.charAt(0).toUpperCase();
-                    welcomeName.textContent = currentUser.displayName;
-                }
+                    // Show main content
+                    showMainContent();
+                })
+                .catch(() => {
+                    alert("Erro ao autenticar com Discord");
+                    showLoginScreen();
+                });
             }
+        }
 
-            // Logout function
-            function logout() {
-                currentUser = null;
-                localStorage.removeItem('rcn_user');
+        function loginWithDiscord() {
+            const clientId = "1416370106526728282";
+            // Use a URL fixa que corresponde ao redirect URI configurado no Discord
+            const redirectUri = encodeURIComponent("https://rcnsite.netlify.app"); // Muda para a tua URL exata
+            const scope = "identify";
+            const responseType = "token";
+
+            const oauthUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}`;
+            
+            window.location.href = oauthUrl;
+        }
+
+        function getDiscordAvatarUrl(user) {
+            if (user.avatar) {
+                return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
+            } else {
+                // Default Discord avatar based on discriminator
+                const defaultAvatarNumber = user.discriminator ? 
+                    parseInt(user.discriminator) % 5 : 
+                    (parseInt(user.id) >> 22) % 6;
+                return `https://cdn.discordapp.com/embed/avatars/${defaultAvatarNumber}.png`;
+            }
+        }
+
+        function updateUserInfo() {
+            if (currentUser) {
+                const userName = document.getElementById('userName');
+                const userAvatar = document.getElementById('userAvatar');
+                const welcomeName = document.getElementById('welcomeName');
                 
-                // Hide main content and show login screen
-                document.getElementById('mainHeader').style.display = 'none';
-                document.getElementById('mainContent').style.display = 'none';
-                document.getElementById('mainFooter').style.display = 'none';
-                document.getElementById('loginScreen').style.display = 'flex';
-                document.getElementById('loginScreen').classList.remove('hide');
+                // Update name display
+                userName.textContent = currentUser.displayName;
+                welcomeName.textContent = currentUser.displayName;
+                
+                // Update avatar with Discord profile picture
+                const avatarUrl = getDiscordAvatarUrl(currentUser);
+                userAvatar.innerHTML = `<img src="${avatarUrl}" alt="${currentUser.displayName}" onerror="this.parentElement.innerHTML='${currentUser.displayName.charAt(0).toUpperCase()}'">`;
             }
+        }
 
-            // Check if user is already logged in
-            function checkAuth() {
-                const storedUser = localStorage.getItem('rcn_user');
-                if (storedUser) {
-                    currentUser = JSON.parse(storedUser);
-                    document.getElementById('loginScreen').style.display = 'none';
-                    document.getElementById('mainHeader').style.display = 'block';
-                    document.getElementById('mainContent').style.display = 'block';
-                    document.getElementById('mainFooter').style.display = 'block';
-                    updateUserInfo();
-                }
+        function showMainContent() {
+            document.getElementById('loginScreen').classList.add('hide');
+            setTimeout(() => {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainHeader').style.display = 'block';
+                document.getElementById('mainContent').style.display = 'block';
+                document.getElementById('mainFooter').style.display = 'block';
+                updateUserInfo();
+            }, 500);
+        }
+
+        function showLoginScreen() {
+            document.getElementById('mainHeader').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('mainFooter').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('loginScreen').classList.remove('hide');
+        }
+
+        function logout() {
+            currentUser = null;
+            showLoginScreen();
+        }
+
+        function checkAuth() {
+            // Check if there's an OAuth callback first
+            if (window.location.hash.includes('access_token')) {
+                handleOAuthCallback();
+                return;
             }
+            
+            // If no token and no stored user, show login
+            showLoginScreen();
+        }
 
-            // Theme Toggle
-            function toggleTheme() {
-                isDarkMode = !isDarkMode;
-                const body = document.body;
-                const themeIcon = document.getElementById('theme-icon');
-                const themeText = document.getElementById('theme-text');
+        // Theme Toggle
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
 
-                if (isDarkMode) {
-                    body.classList.remove('light-mode');
-                    themeIcon.textContent = '🌙';
-                    themeText.textContent = 'Escuro';
-                } else {
-                    body.classList.add('light-mode');
-                    themeIcon.textContent = '☀️';
-                    themeText.textContent = 'Claro';
-                }
+            if (isDarkMode) {
+                body.classList.remove('light-mode');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Escuro';
+            } else {
+                body.classList.add('light-mode');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Claro';
             }
+        }
 
-            // Loading screen
-            window.addEventListener('load', function() {
-                setTimeout(() => {
-                    document.getElementById('loading').classList.add('hide');
-                    checkAuth();
-                }, 1200);
+        // Loading screen
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                document.getElementById('loading').classList.add('hide');
+                checkAuth();
+            }, 1200);
+        });
+
+        // Page navigation
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
             });
 
-            // Page navigation
-            function showPage(pageId) {
-                const pages = document.querySelectorAll('.page');
-                pages.forEach(page => {
-                    page.classList.remove('active');
-                });
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-                document.getElementById(pageId).classList.add('active');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Header scroll effect
+        let lastScroll = 0;
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            const currentScroll = window.scrollY;
+
+            if (currentScroll > 100) {
+                header.style.background = isDarkMode ? 
+                    'rgba(10, 10, 10, 0.95)' : 
+                    'rgba(255, 255, 255, 0.95)';
+                header.style.backdropFilter = 'blur(20px)';
+            } else {
+                header.style.background = isDarkMode ? 
+                    'rgba(10, 10, 10, 0.9)' : 
+                    'rgba(255, 255, 255, 0.9)';
             }
 
-            // Header scroll effect
-            let lastScroll = 0;
+            lastScroll = currentScroll;
+        });
+
+        // Smooth animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Observe elements for animations
+            const cards = document.querySelectorAll('.card, .news-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px)';
+                card.style.transition = `all 0.6s ease ${index * 0.1}s`;
+                observer.observe(card);
+            });
+
+            // Add parallax effect to floating shapes
             window.addEventListener('scroll', function() {
-                const header = document.querySelector('header');
-                const currentScroll = window.scrollY;
-
-                if (currentScroll > 100) {
-                    header.style.background = isDarkMode ? 
-                        'rgba(10, 10, 10, 0.95)' : 
-                        'rgba(255, 255, 255, 0.95)';
-                    header.style.backdropFilter = 'blur(20px)';
-                } else {
-                    header.style.background = isDarkMode ? 
-                        'rgba(10, 10, 10, 0.9)' : 
-                        'rgba(255, 255, 255, 0.9)';
-                }
-
-                lastScroll = currentScroll;
-            });
-
-            // Smooth animations on scroll
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -100px 0px'
-            };
-
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-
-            // Initialize
-            document.addEventListener('DOMContentLoaded', function() {
-                // Observe elements for animations
-                const cards = document.querySelectorAll('.card, .news-card');
-                cards.forEach((card, index) => {
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(50px)';
-                    card.style.transition = `all 0.6s ease ${index * 0.1}s`;
-                    observer.observe(card);
-                });
-
-                // Add parallax effect to floating shapes
-                window.addEventListener('scroll', function() {
-                    const shapes = document.querySelectorAll('.shape');
-                    const scrolled = window.pageYOffset;
-                    
-                    shapes.forEach((shape, index) => {
-                        const rate = scrolled * (0.5 + index * 0.1);
-                        shape.style.transform = `translateY(${rate}px)`;
-                    });
-                });
-            });
-
-            // Easter egg: Konami code
-            let konamiCode = [];
-            const konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
-
-            document.addEventListener('keydown', function(e) {
-                konamiCode.push(e.keyCode);
-                if (konamiCode.length > konamiSequence.length) {
-                    konamiCode.shift();
-                }
+                const shapes = document.querySelectorAll('.shape');
+                const scrolled = window.pageYOffset;
                 
-                if (konamiCode.join(',') === konamiSequence.join(',')) {
-                    document.body.style.animation = 'rainbow 2s infinite';
-                    setTimeout(() => {
-                        document.body.style.animation = '';
-                    }, 2000);
-                }
+                shapes.forEach((shape, index) => {
+                    const rate = scrolled * (0.5 + index * 0.1);
+                    shape.style.transform = `translateY(${rate}px)`;
+                });
             });
+        });
 
-            // Add rainbow animation for easter egg
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes rainbow {
-                    0% { filter: hue-rotate(0deg); }
-                    100% { filter: hue-rotate(360deg); }
-                }
-            `;
-            document.head.appendChild(style);
-        </script>
-    </body>
-    </html>
+        // Easter egg: Konami code
+        let konamiCode = [];
+        const konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+
+        document.addEventListener('keydown', function(e) {
+            konamiCode.push(e.keyCode);
+            if (konamiCode.length > konamiSequence.length) {
+                konamiCode.shift();
+            }
+            
+            if (konamiCode.join(',') === konamiSequence.join(',')) {
+                document.body.style.animation = 'rainbow 2s infinite';
+                setTimeout(() => {
+                    document.body.style.animation = '';
+                }, 2000);
+            }
+        });
+
+        // Add rainbow animation for easter egg
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes rainbow {
+                0% { filter: hue-rotate(0deg); }
+                100% { filter: hue-rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
