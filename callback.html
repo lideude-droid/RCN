@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <title>Discord Callback</title>
+</head>
+<body>
+<script>
+  const fragment = new URLSearchParams(window.location.hash.slice(1));
+  const accessToken = fragment.get("access_token");
+
+  if (accessToken) {
+    fetch("https://discord.com/api/users/@me", {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    })
+    .then(res => res.json())
+    .then(user => {
+      // Guardar utilizador localmente
+      localStorage.setItem("rcn_user", JSON.stringify(user));
+      // Redirecionar para a home
+      window.location.href = "index.html";
+    })
+    .catch(() => {
+      alert("Erro ao autenticar com Discord");
+      window.location.href = "index.html";
+    });
+  } else {
+    window.location.href = "index.html";
+  }
+</script>
+</body>
+</html>
